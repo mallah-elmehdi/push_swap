@@ -476,31 +476,77 @@ int ft_sorted(char **str)
 		return (ERROR);
 	while (i < ft_strlen_v2(str) - 1)
 	{
-		if (ft_atoi(str[i]) < ft_atoi(str[i + 1]))
+		if (ft_atoi(str[i]) > ft_atoi(str[i + 1]))
 			return (ERROR);
 		i++;
 	}
 	return (SUCCESS);
 }
 
+int *get_list_index(char **str)
+{
+    int i;
+    int temp;
+    int *list;
+    
+    list = (int *)malloc(sizeof(int) * ft_strlen_v2(str));
+    if (!list)
+        return (NULL);
+    i = 0;
+    while (str[i])    
+    {
+        list[i] = i;
+        i++;
+    }
+    i = 0;
+    while (i < ft_strlen_v2(str) - 1)
+    {
+        if (ft_atoi(str[list[i]]) > ft_atoi(str[list[i + 1]]))
+        {
+            temp = list[i];
+            list[i] = list[i + 1];
+            list[i + 1] = temp;
+            i = -1;
+        }
+        i++;
+    }
+    return (list);
+}
+
 int	sort(char **stack_a)
 {
 	int index;
 	char	**stack_b;
+	int	*list;
 
 	stack_b = (char **)ft_calloc_v2(sizeof(char *), ft_strlen_v2(stack_a) + 1);
 	if (!stack_b)
 		return (ft_error());
-	while (ft_strlen_v2(stack_a) || ft_sorted(stack_b) == ERROR)
-	{
-		if (!sort_a(stack_a, stack_b))
-			return (ft_error());
-	}
-	while (ft_strlen_v2(stack_b))
-	{
-		if (!pa(stack_a, stack_b))
-			return (ft_error());
-	}
+	// while (ft_strlen_v2(stack_a) || ft_sorted(stack_b) == ERROR)
+	// {
+	// 	if (!sort_a(stack_a, stack_b))
+	// 		return (ft_error());
+	// }
+	// while (ft_strlen_v2(stack_b))
+	// {
+	// 	if (!pa(stack_a, stack_b))
+	// 		return (ft_error());
+	// }
+	list = get_list_index(stack_a);
+    if (!list)
+        return (ERROR);
+        
+    int i = 0;
+    while (stack_a[i])
+    {
+        printf("%d\n", list[i++]);
+    }
+    
+	// while (ft_sorted(stack_a) == ERROR)
+	// {
+	// 	if (!sort_a(stack_a, stack_b))
+	// 		return (ft_error());
+	// }
 	return (SUCCESS);
 }
 
