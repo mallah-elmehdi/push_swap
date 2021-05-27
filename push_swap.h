@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "tools/tools.h"
-#include "error/error.h"
-#include "sort/sort.h"
+
+
+#define ERROR -1
+#define SUCCESS 0
+#define MAXINT 2147483647

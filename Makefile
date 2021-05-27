@@ -1,12 +1,7 @@
 NAME = push_swap
 
-EROOR =	error/duplicate.c error/tool.c error/syntax.c
-TOOLS = tools/pack_a.c tools/pack_b.c tools/pack_c.c
-SORT = sort/sort.c
-MAIN = main.c
-
 $(NAME):
-	@gcc  -fsanitize=address $(EROOR) $(TOOLS) $(SORT) $(MAIN) -o $(NAME)
+	@gcc -g -fsanitize=address main.c -o $(NAME)
 all : $(NAME)
 
 clean:
