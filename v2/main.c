@@ -10,6 +10,16 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
+int	ft_arrlen(int *list)
+{
+	int		i;
+
+	i = 0;
+	while (list[i] != -1)
+		i++;
+	return (i);
+}
+
 int	ft_error(void)
 {
 	write(2, "Error\n", 6);
@@ -272,224 +282,247 @@ char	**ft_get_list(char **str)
 	return (temp);
 }
 
-int	get_min_index(char **str)
+int	get_min_index(int *list)
 {
 	int index;
 	int i;
 
 	index = 0;
 	i = 0;
-	while (str[i])
+	while (i < ft_arrlen(list))
 	{
-		if (ft_atoi(str[index]) > ft_atoi(str[i]))
+		if (list[index] > list[i])
 			index = i;
 		i++;
 	}
 	return (index);
 }
 
-char	*sa(char **str)
+void	move_list(int *list)
 {
-	char *temp;
-
-	temp = ft_strdup(str[0]);
-	if (!temp)
-		return (NULL);
-	free(str[0]);
-	str[0] = ft_strdup(str[1]);
-	if (!str[0])
-		return (NULL);
-	free(str[1]);
-	str[1] = ft_strdup(temp);
-	if (!str[1])
-		return (NULL);
-	free(temp);
-	write(1, "sa\n", 3);
-	return (*str);
-}
-
-char	*sb(char **str)
-{
-	char *temp;
-
-	temp = ft_strdup(str[0]);
-	if (!temp)
-		return (NULL);
-	free(str[0]);
-	str[0] = ft_strdup(str[1]);
-	if (!str[0])
-		return (NULL);
-	free(str[1]);
-	str[1] = ft_strdup(temp);
-	if (!str[1])
-		return (NULL);
-	free(temp);
-	write(1, "sb\n", 3);
-	return (*str);
-}
-
-char	*rra(char **str)
-{
-	char *temp;
 	int i;
 
-	i = ft_strlen_v2(str) - 1;
+	i = ft_arrlen(list);
 	while (i > 0)
 	{
-		temp = ft_strdup(str[i]);
-		if (!temp)
-			return (NULL);
-		free(str[i]);
-		str[i] = ft_strdup(str[i - 1]);
-		if (!str[i])
-			return (NULL);
-		free(str[i - 1]);
-		str[i - 1] = ft_strdup(temp);
-		if (!str[i - 1])
-			return (NULL);
-		free(temp);
+		list[i] = list[i - 1];
 		i--;
 	}
-	write(1, "rra\n", 4);
-	return (*str);
 }
 
-char	*ra(char **str)
+// ==================================== SA SB
+
+void	s(int *list, char *ins)
 {
-	char *temp;
+	int	temp;
+
+	temp = list[0];
+	list[0] = list[1];
+	list[1] = temp;
+	if (ins)
+		write(1, ins, ft_strlen(ins));
+}
+
+// ======================================= RR
+
+void	rr(int *list, char *ins)
+{
+	int	temp;
+	int i;
+
+	i = ft_arrlen(list) - 1;
+	while (i > 0)
+	{
+		temp = list[i];
+		list[i] = list[i - 1];
+		list[i - 1] = temp;
+		i--;
+	}
+	if (ins)
+		write(1, ins, ft_strlen(ins));
+}
+
+// ===================================== R
+
+void	r(int *list, char *ins)
+{
+	int	temp;
 	int i;
 
 	i = 0;
-	while (i < ft_strlen_v2(str) - 1)
+	while (i < ft_arrlen(list) - 1)
 	{
-		temp = ft_strdup(str[i]);
-		if (!temp)
-			return (NULL);
-		free(str[i]);
-		str[i] = ft_strdup(str[i + 1]);
-		if (!str[i])
-			return (NULL);
-		free(str[i + 1]);
-		str[i + 1] = ft_strdup(temp);
-		if (!str[i + 1])
-			return (NULL);
-		free(temp);
+		temp = list[i];
+		list[i] = list[i + 1];
+		list[i + 1] = temp;
 		i++;
 	}
-	write(1, "ra\n", 3);
-	return (*str);
+	if (ins)
+		write(1, ins, ft_strlen(ins));
 }
 
-char	*pb(char **stack_a, char **stack_b)
+// =========================================== PB
+
+void	pb(int *stack_a, int *stack_b, char *ins)
 {
 	int i;
-	int j;
 
 	i = 0;
-	j = ft_strlen_v2(stack_b);
-
-	while (j > 0)
+	move_list(stack_b);
+	stack_b[0] = stack_a[0];
+	while (i < ft_arrlen(stack_a) - 1)
 	{
-		stack_b[j] = ft_strdup(stack_b[j - 1]);
-		if (!stack_b[j])
-			return (NULL);
-		free(stack_b[j - 1]);
-		j--;
-	}
-
-	stack_b[0] = ft_strdup(stack_a[0]);
-	if (!stack_b[0])
-		return (NULL);
-	while (i < ft_strlen_v2(stack_a) - 1)
-	{
-		// free(stack_a[i]);
-		stack_a[i] = ft_strdup(stack_a[i + 1]);
-		if (!stack_a[i])
-			return (NULL);
-		free(stack_a[i + 1]);
+		stack_a[i] = stack_a[i + 1];
 		i++;
 	}
-	stack_a[i] = NULL;
-	write(1, "pb\n", 3);
-	return ("GOOD");
+	stack_a[i] = -1;
+	if (ins)
+		write(1, ins, ft_strlen(ins));
 }
 
-char	*pa(char **stack_a, char **stack_b)
+// ============================================== PA
+
+void	pa(int *stack_a, int *stack_b, char *ins)
 {
 	int i;
-	int j;
 
 	i = 0;
-	j = ft_strlen_v2(stack_a);
-
-	while (j > 0)
+	move_list(stack_a);
+	stack_a[0] = stack_b[0];
+	while (i < ft_arrlen(stack_b) - 1)
 	{
-		stack_a[j] = ft_strdup(stack_a[j - 1]);
-		if (!stack_a[j])
-			return (NULL);
-		free(stack_a[j - 1]);
-		j--;
-	}
-
-	stack_a[0] = ft_strdup(stack_b[0]);
-	if (!stack_a[0])
-		return (NULL);
-	while (i < ft_strlen_v2(stack_b) - 1)
-	{
-		// free(stack_b[i]);
-		stack_b[i] = ft_strdup(stack_b[i + 1]);
-		if (!stack_b[i])
-			return (NULL);
-		free(stack_b[i + 1]);
+		stack_b[i] = stack_b[i + 1];
 		i++;
 	}
-	stack_b[i] = NULL;
-	write(1, "pa\n", 3);
-	return ("GOOD");
+	stack_b[i] = -1;
+	if (ins)
+		write(1, ins, ft_strlen(ins));
 }
 
-char	*sort_a(char **stack_a, char **stack_b)
+// int checkarr(int *list)
+// {
+// 	int i;
+// 	int j;
+// 	int find;
+// 	int out;
+
+// 	i = 0;
+// 	out = 0;
+// 	while (i < ft_arrlen(list))
+// 	{
+// 		j = 0;
+// 		find = 0;
+// 		while (!find && j < ft_arrlen(list))
+// 		{
+// 			if (i == list[j])
+// 				find = 1;
+// 			j++;
+// 		}
+// 		if (!find)
+// 			out++;
+// 		i++;
+// 	}
+// 	return (out);
+// }
+
+int	how_much_close(int *stack_a, int *stack_b)
 {
-	if (ft_strlen_v2(stack_b) > 1 && ft_atoi(stack_b[0]) < ft_atoi(stack_b[1]))
+	int i;
+	int out;
+
+	i = 0;
+	out = 0;
+	while (i < ft_arrlen(stack_a))
 	{
-		while (ft_strlen_v2(stack_b) > 1 && ft_atoi(stack_b[0]) < ft_atoi(stack_b[1]))
+		if (stack_a[i] != i + ft_arrlen(stack_b))
+			out++;
+		i++;
+	}
+	return (out);
+}
+
+void	ft_case(int *list)
+{
+	if ((list[2] < list[0] && list[2] > list[1]) || (list[1] < list[0] && list[0] > list[0]))
+		r(list, "ra\n");
+	else if (list[0] > list[1] && list[0] < list[2])
+		s(list, "sa\n");
+	else
+		rr(list, "rra\n");
+}
+
+// =========================================================== SORT
+
+void	sort_a(int *stack_a, int *stack_b)
+{
+	int index;
+	
+	index = get_min_index(stack_a);
+	if (ft_arrlen(stack_a) == 2)
+		s(stack_a, "sa\n");
+	else if (ft_arrlen(stack_a) == 3)
+		ft_case(stack_a);
+	else if (index == 0)
+		pb(stack_a, stack_b, "pb\n");
+	else if (index == 1)
+		s(stack_a, "sa\n");
+	else if (index > ft_arrlen(stack_a) / 2)
+	{
+		while (index < ft_arrlen(stack_a) )
 		{
-			if (!sb(stack_b))
-				return (NULL);
-			if (!pa(stack_a, stack_b))
-				return (NULL);
+			rr(stack_a, "rra\n");
+			index++;
 		}
 	}
-	else {
-		if (!pb(stack_a, stack_b))
-			return (NULL);
+	else
+	{
+		while (index >= 0)
+		{
+			r(stack_a, "ra\n");
+			index--;
+		}
 	}
-	return ("GOOD");
 }
 
-int ft_sorted(char **str)
+int ft_sorted(int *list)
 {
 	int i;
 
 	i = 0;
-	if (ft_strlen_v2(str) <= 1)
+	if (!ft_arrlen(list))
 		return (ERROR);
-	while (i < ft_strlen_v2(str) - 1)
+	while (i < ft_arrlen(list) - 1)
 	{
-		if (ft_atoi(str[i]) > ft_atoi(str[i + 1]))
+		if (list[i] > list[i + 1])
 			return (ERROR);
 		i++;
 	}
 	return (SUCCESS);
 }
 
+int	*get_stack_b(char **str)
+{
+	int i;
+	int *temp;
+
+	i = 0;
+	temp = (int* )malloc(sizeof(int) * (ft_strlen_v2(str) + 1));
+	if (!temp)
+		return (NULL);
+	while (i <= ft_strlen_v2(str))
+	{
+		temp[i] = -1;
+		i++;
+	}
+	return (temp);
+}
+
 int *get_list_index(char **str)
 {
     int i;
-    int temp;
     int *list;
     
-    list = (int *)malloc(sizeof(int) * ft_strlen_v2(str));
+    list = get_stack_b(str);
     if (!list)
         return (NULL);
     i = 0;
@@ -498,55 +531,73 @@ int *get_list_index(char **str)
         list[i] = i;
         i++;
     }
-    i = 0;
-    while (i < ft_strlen_v2(str) - 1)
-    {
-        if (ft_atoi(str[list[i]]) > ft_atoi(str[list[i + 1]]))
-        {
-            temp = list[i];
-            list[i] = list[i + 1];
-            list[i + 1] = temp;
-            i = -1;
-        }
-        i++;
-    }
     return (list);
 }
 
-int	sort(char **stack_a)
+int	check_list(char **str)
 {
-	int index;
-	char	**stack_b;
-	int	*list;
+	int i;
 
-	stack_b = (char **)ft_calloc_v2(sizeof(char *), ft_strlen_v2(stack_a) + 1);
-	if (!stack_b)
-		return (ft_error());
-	// while (ft_strlen_v2(stack_a) || ft_sorted(stack_b) == ERROR)
-	// {
-	// 	if (!sort_a(stack_a, stack_b))
-	// 		return (ft_error());
-	// }
-	// while (ft_strlen_v2(stack_b))
-	// {
-	// 	if (!pa(stack_a, stack_b))
-	// 		return (ft_error());
-	// }
-	list = get_list_index(stack_a);
-    if (!list)
-        return (ERROR);
-        
-    int i = 0;
-    while (stack_a[i])
+	i = 0;
+	while (str[i])
+	{
+		if (str[i][0] != 'S')
+			return (ERROR);
+		i++;
+	}
+	return (SUCCESS);
+}
+
+int	*get_stack_a(char **str)
+{
+	int i;
+	int val;
+	int *temp;
+	int *temp2;
+
+	i = 0;
+	temp = get_list_index(str);
+	if (!temp)
+		return (NULL);
+	temp2 = get_list_index(str);
+	if (!temp)
+		return (NULL);
+    while (i < ft_strlen_v2(str) - 1)
     {
-        printf("%d\n", list[i++]);
+		if (ft_atoi(str[temp[i]]) > ft_atoi(str[temp[i + 1]]))
+		{
+			val = temp[i];
+			temp[i] = temp[i + 1];
+			temp[i + 1] = val;
+			i = -1;
+		}
+		i++;
     }
-    
-	// while (ft_sorted(stack_a) == ERROR)
-	// {
-	// 	if (!sort_a(stack_a, stack_b))
-	// 		return (ft_error());
-	// }
+	i = 0;
+    while (i < ft_strlen_v2(str))
+    {
+		temp2[temp[i]] = i;
+		i++;
+    }
+	free(temp);
+	return (temp2);
+}
+
+int	sort(char **str)
+{
+	int	*stack_a;
+	int	*stack_b;
+
+	stack_a = get_stack_a(str);
+	stack_b = get_stack_b(str);
+	if (!stack_a || !stack_b)
+		return (ft_error());
+	while (ft_sorted(stack_a))	
+		sort_a(stack_a, stack_b);
+	while (ft_arrlen(stack_b))	
+		pa(stack_a, stack_b, "pa\n");
+	free(stack_a);
+	free(stack_b);
 	return (SUCCESS);
 }
 
@@ -555,13 +606,13 @@ int	main(int ac, char **av)
 	char	**stack_a;
 
 	if (ac < 2)
-		return (SUCCESS);
+		return (ERROR);
 	stack_a = ft_get_list(av);
 	if (!stack_a)
 		return (ERROR);
 	if (sort(stack_a) == ERROR)
 		return (ERROR);
-	
+	free_2(stack_a);
 	return (SUCCESS);
 }
 

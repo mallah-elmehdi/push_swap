@@ -236,7 +236,7 @@ int	ft_duplicate(char **str)
 	return (SUCCESS);
 }
 
-char	**ft_maxint(char **str)
+int	ft_maxint(char **str)
 {	
 	int i;
 
@@ -424,9 +424,27 @@ char	*pa(char **stack_a, char **stack_b)
 	return ("GOOD");
 }
 
+char	*ft_case(char **stack_a)
+{
+	if (ft_atoi(stack_a[2]) < ft_atoi(stack_a[0]) && ft_atoi(stack_a[2]) > ft_atoi(stack_a[1]))
+		ra(stack_a);
+	else if (ft_atoi(stack_a[1]) < ft_atoi(stack_a[0]) && ft_atoi(stack_a[0]) > ft_atoi(stack_a[0]))
+		ra(stack_a);
+	else if (ft_atoi(stack_a[0]) > ft_atoi(stack_a[1]) && ft_atoi(stack_a[0]) < ft_atoi(stack_a[2]))
+		sa(stack_a);
+	else
+		rra(stack_a);
+	return ("GOOD");
+}
+
 char	*sort_a(char **stack_a, char **stack_b, int index)
 {
-	if (index == 1)
+	if (ft_strlen_v2(stack_b) == 3)
+	{
+		if (!ft_case(stack_a))
+			return (NULL);
+	}
+	else if (index == 1)
 	{
 		if (!sa(stack_a))
 			return (NULL);
@@ -435,7 +453,6 @@ char	*sort_a(char **stack_a, char **stack_b, int index)
 	{
 		if (!pb(stack_a, stack_b))
 			return (NULL);
-
 	}
 	else if (index > ft_strlen_v2(stack_a) / 2) {
 		while (index < ft_strlen_v2(stack_a)) {			
