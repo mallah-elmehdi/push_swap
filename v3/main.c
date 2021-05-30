@@ -410,6 +410,7 @@ void	ft_case(int *list, char c)
 	}
 }
 
+
 int ft_sorted(int *list, int vect)
 {
 	int i;
@@ -440,6 +441,7 @@ void	sort_help(int *list, char c)
 {
 	int i;
 	int it;
+	int it_up;
 
 	i = ft_arrlen(list) - 1;
 	it = 0;
@@ -448,14 +450,32 @@ void	sort_help(int *list, char c)
 		i--;
 		it++;
 	}
-	while (it)
+	if (ft_arrlen(list) - it == 2)
+		s(list, 'b');
+	else if (it < (ft_arrlen(list) - 1) / 2)
 	{
-		rr(list, c);
-		s(list, c);
-		it--;
+		while (it)
+		{
+			rr(list, c);
+			s(list, c);
+			it--;
+		}
+		while (ft_sorted(list, 1) == ERROR)
+			r(list, c);
 	}
-	while (ft_sorted(list, 1) == ERROR)
-		r(list, c);
+	else
+	{
+		it_up = ft_arrlen(list) - it - 1;
+		while (it_up)
+		{
+			s(list, c);
+			it_up--;
+			if (it_up)
+				r(list, c);
+		}
+		while (ft_sorted(list, 1) == ERROR)
+			rr(list, c);
+	}
 }
 
 void	sort_desc(int *list, char c)
@@ -485,6 +505,33 @@ int		check_stack(int *list, int max)
 	return (SUCCESS);
 }
 
+void	ft_case_5(int *stack_a, int *stack_b)
+{
+	int i;
+
+	i = 0;
+	while (ft_sorted(stack_a, -1) == ERROR)
+	{
+		i = get_min_index(stack_a);
+		if (i == 0)
+		{
+			p(stack_a, stack_b, 'b');
+			sort_desc(stack_b, 'b');
+		}
+		else if (i <= ft_arrlen(stack_a) / 2)
+		{
+			while (i)
+			{
+				r(stack_a, 'a');
+				i--;
+			}
+		}
+		else
+			rr(stack_a, 'a');
+	}
+
+}
+
 // void	sort_num(int *stack_a, int *stack_b, int length)
 // {
 // 	int i;
@@ -511,81 +558,133 @@ int		check_stack(int *list, int max)
 int	get_down(int *list, int max)
 {
 	int i;
-	int down;
 
-	i =  get_min_index(list);;
-	down = 0;
-	while (i < ft_arrlen(list) && i <= max)
+	i = ft_arrlen(list) - 1;
+	while (i >= 0)
 	{
-		i++;
-		down++;
+		if (list[i] <= max)
+			return (i);
+		i--;
 	}
-	return (down);
+	return (i);
 }
 
 int	get_up(int *list, int max)
 {
 	int i;
-	int up;
 
-	i =  get_min_index(list);;
-	up = 0;
-	while (i >= 0 && i <= max)
+	i = 0;
+	while (i < ft_arrlen(list))
 	{
-		i--;
-		up++;
+		if (list[i] <= max)
+			return (i);
+		i++;
 	}
-	return (up);
+	return (i);
 }
 
-void	sort_num(int *stack_a, int *stack_b, int length)
+int	ft_check_stack(int *list, int max)
 {
 	int i;
-	int part;
-	int up;
-	int down;
 
-	i = 1;
-	part = ft_arrlen(stack_a) / 5;
-	while (i <= 5 && ft_arrlen(stack_a) > 3)
+	i = 0;
+	while (i < ft_arrlen(list))
 	{
-		up = get_up(stack_a, part * i);
-		down = get_down(stack_a, part * i);
-		if (down > up)
+		if (list[i] <= max)
+			return (SUCCESS);
+		i++;
+	}
+	return (ERROR);
+}
+
+// void	sort_num(int *stack_a, int *stack_b)
+// {
+// 	int it;
+// 	int i;
+// 	int up;
+// 	int down;
+// 	int max_part;
+
+// 	it = ft_arrlen(stack_a) < 500 ? 5 : 11;
+// 	max_part =  ft_arrlen(stack_a) / it;
+// 	i = 1;
+// 	while (i <= it)
+// 	{
+// 		while (ft_check_stack(stack_a, max_part * i) == SUCCESS)
+// 		{
+// 			up = get_up(stack_a, max_part * i);
+// 			down = get_down(stack_a, max_part * i);
+// 			if (!up && up < ft_arrlen(stack_a) - 1 - down)
+// 			{
+// 				while (up > 0)
+// 				{
+// 					r(stack_a, 'a');
+// 					up--;
+// 				}
+// 			}
+// 			else if (!up)
+// 			{
+// 				while (down < ft_arrlen(stack_a))
+// 				{
+// 					rr(stack_a, 'a');
+// 					down++;
+// 				}
+// 			}
+// 			p(stack_a, stack_b, 'b');
+// 			sort_desc(stack_b, 'b');
+			
+// 			// printf("stack a =========\n");
+// 			// int s = 0;
+// 			// while (s < ft_arrlen(stack_a))
+// 			// 	printf("%d\n", stack_a[s++]);
+// 			// printf("stack b =========\n");
+// 			// int d = 0;
+// 			// while (d < ft_arrlen(stack_b))
+// 			// 	printf("%d\n", stack_b[d++]);
+// 		}
+// 		i++;
+// 	}
+// }
+
+// void	sort_num(int *stack_a, int *stack_b)
+// {
+// 	while (ft_arrlen(stack_a))
+// 	{
+// 		p(stack_a, stack_b, 'b');
+// 		sort_desc(stack_b, 'b');
+// 	// 	printf("=========\n");
+// 	// int s = 0;
+// 	// while (s < ft_arrlen(stack_b))
+// 	// {
+// 	// 	printf("%d\n", stack_b[s++]);
+// 	// }
+// 	// 	printf("=========\n");
+// 	}
+// }
+
+void	sort_num(int *stack_a, int *stack_b)
+{
+	int it;
+	int a;
+	int i;
+	int max_part;
+
+	it = ft_arrlen(stack_a) < 500 ? 5 : 11;
+	max_part =  ft_arrlen(stack_a) / it;
+	i = 1;
+	while (i <= it)
+	{
+		a = 0;
+		while (a < ft_arrlen(stack_a) - 1)
 		{
-			if (get_min_index(stack_a) < ft_arrlen(stack_a) - get_min_index(stack_a) - down - 1)
+			if (stack_a[a] <= max_part * i)
 			{
-				while (get_min_index(stack_a) != 0)
+				while (a--)
 					r(stack_a, 'a');
-			}
-			else
-			{
-				while (get_min_index(stack_a) != 0)
-					rr(stack_a, 'a');
-			}
-			while (down--)
-			{
 				p(stack_a, stack_b, 'b');
 				sort_desc(stack_b, 'b');
 			}
-		}
-		else
-		{
-			if (get_min_index(stack_a) < ft_arrlen(stack_a) - get_min_index(stack_a) - up - 1)
-			{
-				while (get_min_index(stack_a) != 0)
-					r(stack_a, 'a');
-			}
-			else
-			{
-				while (get_min_index(stack_a) != 0)
-					rr(stack_a, 'a');
-			}
-			while (down--)
-			{
-				p(stack_a, stack_b, 'b');
-				sort_desc(stack_b, 'b');
-			}
+			a++;
 		}
 		i++;
 	}
@@ -593,20 +692,26 @@ void	sort_num(int *stack_a, int *stack_b, int length)
 
 void	sort_all(int *stack_a, int *stack_b)
 {
-	int length;
-	
-	length = ft_arrlen(stack_a) / 2;
 	while (ft_sorted(stack_a, -1) == ERROR)
 	{
 		if (ft_arrlen(stack_a) == 2)
 			s(stack_a, 'a');
 		else if (ft_arrlen(stack_a) == 3)
 			ft_case(stack_a, 'a');
+		else if (ft_arrlen(stack_a) <= 5)
+			ft_case_5(stack_a, stack_b);
 		else
-			sort_num(stack_a, stack_b, length);
+			sort_num(stack_a, stack_b);
 	}
 	while (ft_arrlen(stack_b))
 		p(stack_b, stack_a, 'a');
+		printf("=========\n");
+	int s = 0;
+	while (s < ft_arrlen(stack_a))
+	{
+		printf("%d\n", stack_a[s++]);
+	}
+		printf("=========\n");
 }
 
 int	*get_stack_b(char **str)
@@ -709,3 +814,4 @@ int	main(int ac, char **av)
 }
 
 // ARG=`ruby -e "puts (-1..4).to_a.shuffle.join(' ')"` && ./push_swap $ARG
+// cd .. && make re && cd push_swap_tester &&  ./tester.sh .. 100 10
