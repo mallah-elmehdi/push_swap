@@ -176,7 +176,7 @@ long	ft_atoi(char *str)
 		}
 		while (str[i] >= 48 && str[i] <= 57)
 		{
-			if (a > MAXINT)
+			if (a * sign > MAXINT || a * sign < MININT)
 				return (a * sign);
 			a = (a * 10) + (str[i++] - 48);
 		}
