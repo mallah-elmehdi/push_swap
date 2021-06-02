@@ -14,11 +14,10 @@ int	exec_ins(int *stack_a, int *stack_b, char *temp)
 	return (error());
 }
 
-int	free_all(int *stack_a, int *stack_b, char **str)
+int	free_all(int *stack_a, int *stack_b)
 {
 	free(stack_a);
 	free(stack_b);
-	free_2(str);
 	return (SUCCESS);
 }
 
@@ -38,7 +37,7 @@ int	read_data(char **str, char *temp)
 		if (temp[i] == '\n')
 		{
 			if (exec_ins(stack_a, stack_b, temp) == ERROR && \
-				!free_all(stack_a, stack_b, str))
+				!free_all(stack_a, stack_b))
 				return (ERROR);
 			i = -1;
 		}
@@ -52,23 +51,18 @@ int	read_data(char **str, char *temp)
 
 int	main(int ac, char **av)
 {
-	char	**data;
 	char	*temp;
 
 	if (ac < 2)
 		return (ERROR);
-	data = get_list(av);
-	if (!data)
-		return (ERROR);
 	temp = (char *)ft_calloc(sizeof(char), 5);
 	if (!temp)
 		return (ERROR);
-	if (read_data(data, temp) == ERROR)
+	if (read_data(av, temp) == ERROR)
 	{
 		free(temp);
 		return (ERROR);
 	}
-	free_2(data);
 	free(temp);
 	return (SUCCESS);
 }
