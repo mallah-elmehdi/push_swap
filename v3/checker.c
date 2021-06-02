@@ -28,7 +28,12 @@ int	read_data(char **str, char *temp)
 		if (temp[i] == '\n')
 		{
 			if (exec_ins(stack_a, stack_b, temp) == ERROR)
+			{
+                free(stack_a);
+                free(stack_b);
+                free_2(str);
 				return (ERROR);
+			}
 			i = -1;
 		}
 		i++;
@@ -47,11 +52,16 @@ int	main(int ac, char **av)
 	if (ac < 2)
 		return (ERROR);
 	data = get_list(av);
+	if (!data)
+		return (ERROR);
 	temp = (char *)ft_calloc(sizeof(char), 5);
-	if (!data || !temp)
+	if (!temp)
 		return (ERROR);
 	if (read_data(data, temp) == ERROR)
+	{
+    	free(temp);
 		return (ERROR);
+	}
 	free_2(data);
 	free(temp);
 	return (SUCCESS);

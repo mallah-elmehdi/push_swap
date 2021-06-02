@@ -37,7 +37,10 @@ int	duplicate(char **str)
 		while (str[j])
 		{
 			if (!ft_strcmp(str[j], str[i]))
+			{
+                free_2(str);
 				return (error());
+			}
 			j++;
 		}
 		i++;
@@ -53,7 +56,10 @@ int	maxint(char **str)
 	while (str[i])
 	{
 		if (ft_atoi(str[i]) > MAXINT)
+		{
+            free_2(str);
 			return (error());
+		}
 		i++;
 	}
 	return (SUCCESS);

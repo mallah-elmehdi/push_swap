@@ -60,9 +60,7 @@ int	*get_stack_a(char **str)
 char	**get_list(char **str)
 {
 	char	**temp;
-	int		i;
 
-	i = 0;
 	if (syntax(str))
 		return (NULL);
 	temp = get_data(str);
