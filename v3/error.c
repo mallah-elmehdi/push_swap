@@ -38,7 +38,7 @@ int	duplicate(char **str)
 		{
 			if (!ft_strcmp(str[j], str[i]))
 			{
-                free_2(str);
+				free_2(str);
 				return (error());
 			}
 			j++;
@@ -57,7 +57,7 @@ int	maxint(char **str)
 	{
 		if (ft_atoi(str[i]) > MAXINT)
 		{
-            free_2(str);
+			free_2(str);
 			return (error());
 		}
 		i++;

@@ -12,6 +12,14 @@ int	exec_ins(int *stack_a, int *stack_b, char *temp)
 	return (error());
 }
 
+int	free_all(int *stack_a, int *stack_b, char **str)
+{
+	free(stack_a);
+	free(stack_b);
+	free_2(str);
+	return (SUCCESS);
+}
+
 int	read_data(char **str, char *temp)
 {
 	int	*stack_a;
@@ -27,13 +35,9 @@ int	read_data(char **str, char *temp)
 	{
 		if (temp[i] == '\n')
 		{
-			if (exec_ins(stack_a, stack_b, temp) == ERROR)
-			{
-                free(stack_a);
-                free(stack_b);
-                free_2(str);
+			if (exec_ins(stack_a, stack_b, temp) == ERROR && \
+				!free_all(stack_a, stack_b, str))
 				return (ERROR);
-			}
 			i = -1;
 		}
 		i++;
@@ -59,7 +63,7 @@ int	main(int ac, char **av)
 		return (ERROR);
 	if (read_data(data, temp) == ERROR)
 	{
-    	free(temp);
+		free(temp);
 		return (ERROR);
 	}
 	free_2(data);

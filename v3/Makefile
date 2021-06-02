@@ -5,7 +5,10 @@ PS =  push_swap.c
 CH = checker.c
 
 $(NAME):
-	@gcc -Wall -Wextra -Werror -g -fsanitize=address $(FILE) $(PS) -o $(NAME)
+	@gcc -Wall -Wextra -Werror -g $(FILE) $(PS) -o $(NAME)
+
+$(BONUS):
+	@gcc -Wall -Wextra -Werror -g $(FILE) $(PS) -o $(NAME)
 
 all : $(NAME)
 
@@ -17,5 +20,4 @@ fclean: clean
 
 re: fclean all
 
-bonus:
-	@gcc -Wall -Wextra -Werror -g -fsanitize=address $(FILE) $(CH) -o $(BN)
+bonus: $(BONUS)
