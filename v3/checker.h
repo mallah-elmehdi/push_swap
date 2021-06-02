@@ -4,7 +4,7 @@
 # include "push_swap.h"
 
 void	update_temp(char *temp);
-void	result(int *stack_a, int *stack_b);
+int		result(int *stack_a, int *stack_b);
 int		ins_a(int *stack_a, int *stack_b, char *temp);
 int		ins_b(int *stack_a, int *stack_b, char *temp);
 int		ins_ab(int *stack_a, int *stack_b, char *temp);

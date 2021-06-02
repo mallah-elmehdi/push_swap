@@ -83,10 +83,11 @@ int	ins_ab(int *stack_a, int *stack_b, char *temp)
 	return (ERROR);
 }
 
-void	result(int *stack_a, int *stack_b)
+int	result(int *stack_a, int *stack_b)
 {
 	if (arrlen(stack_b) > 0 || sorted(stack_a, -1) == ERROR)
 		write(1, "KO\n", 3);
 	else
 		write(1, "OK\n", 3);
+	return (ERROR);
 }

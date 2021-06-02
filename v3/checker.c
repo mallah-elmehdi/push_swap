@@ -9,6 +9,8 @@ int	exec_ins(int *stack_a, int *stack_b, char *temp)
 		return (SUCCESS);
 	else if (ins_ab(stack_a, stack_b, temp) == SUCCESS)
 		return (SUCCESS);
+	else if (!temp[0])
+		return (result(stack_a, stack_b));
 	return (error());
 }
 
