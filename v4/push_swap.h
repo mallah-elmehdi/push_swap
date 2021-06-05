@@ -13,12 +13,9 @@ int		syntax(char **str);
 int		duplicate(char **str);
 int		maxint(char **str);
 int		error(void);
-
 int		get_down(int *list, int max);
 int		get_up(int *list, int max);
-
 int		*get_stack_a(char **str);
-
 int		check_stack(int *list, int max);
 int		get_max_index(int *list);
 int		get_min_index(int *list);
@@ -33,12 +30,11 @@ int		get_data_element(char *str, char **temp);
 int		has_space(char *str);
 int		ft_strlen_v2(char **str);
 int		*get_list_index(char **str);
-int     check_error(char **str);
+int		check_error(char **str);
 int		*get_stack_b(char **str);
 char	*ft_calloc(int a, int b);
 char	*ft_strdup(char *str);
 char	*ft_strcdup(char *str);
-// char	**get_list(char **str);
 char	**get_data(char **str);
 char	**ft_calloc_v2(int a, int b);
 void	sort_all(int *stack_a, int *stack_b);

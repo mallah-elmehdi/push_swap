@@ -57,7 +57,7 @@ int	*get_stack_a(char **str)
 	return (temp2);
 }
 
-int check_error(char **str)
+int	check_error(char **str)
 {
 	if (syntax(str))
 		return (ERROR);
