@@ -9,8 +9,6 @@ int	exec_ins(int *stack_a, int *stack_b, char *temp)
 		return (SUCCESS);
 	else if (ins_ab(stack_a, stack_b, temp) == SUCCESS)
 		return (SUCCESS);
-	else if (!temp[0])
-		return (result(stack_a, stack_b));
 	return (error());
 }
 
@@ -57,6 +55,8 @@ int	main(int ac, char **av)
 		return (ERROR);
 	temp = (char *)ft_calloc(sizeof(char), 5);
 	if (!temp)
+		return (ERROR);
+	if (check_error(av) == ERROR)
 		return (ERROR);
 	if (read_data(av, temp) == ERROR)
 	{

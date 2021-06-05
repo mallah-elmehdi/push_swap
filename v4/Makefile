@@ -18,6 +18,6 @@ clean:
 fclean: clean
 	@rm -f $(NAME) $(BONUS)
 
-re: fclean all
-
 bonus: $(BONUS)
+
+re: fclean all bonus

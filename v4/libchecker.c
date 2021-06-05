@@ -68,7 +68,13 @@ int	ins_b(int *stack_a, int *stack_b, char *temp)
 
 int	ins_ab(int *stack_a, int *stack_b, char *temp)
 {
-	if (!ft_strcmp(temp, "rr"))
+	if (!ft_strcmp(temp, "ss"))
+	{
+		s(stack_b, 0);
+		s(stack_a, 0);
+		return (SUCCESS);
+	}
+	else if (!ft_strcmp(temp, "rr"))
 	{
 		r(stack_b, 0);
 		r(stack_a, 0);

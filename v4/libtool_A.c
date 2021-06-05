@@ -43,7 +43,7 @@ void	get_num_data(char **str, int *temp)
 	int	val;
 
 	i = 0;
-	while (i < ft_strlen_v2(str) - 1)
+	while (i < ft_strlen_v2(str) - 2)
 	{
 		if (ft_atoi(str[temp[i]]) > ft_atoi(str[temp[i + 1]]))
 		{
