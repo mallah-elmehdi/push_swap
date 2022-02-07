@@ -1,5 +1,6 @@
 #include "push_swap.h"
 
+
 int	sort(char **str)
 {
 	int	*stack_a;
